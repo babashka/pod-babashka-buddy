@@ -6,13 +6,17 @@
   (pods/load-pod "./pod-babashka-buddy")
   (pods/load-pod ["clojure" "-M" "-m" "pod.babashka.buddy"]))
 
-(require '[pod.babashka.buddy.core.hash :as h])
+(require '[pod.babashka.buddy.hash :as h])
 
-(prn (h/sha256 "foo")) ;;=> "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+(prn (h/sha256 "foo"))
 
-(require '[pod.babashka.buddy.core.mac :as mac])
+(require '[pod.babashka.buddy.mac :as mac])
 
 (prn (mac/hash "foo bar" {:key "mysecretkey" :alg :hmac+sha256}))
+
+(require '[pod.babashka.buddy.nonce :as nonce])
+
+(prn (nonce/random-bytes 64))
 
 (when-not (= "executable" (System/getProperty "org.graalvm.nativeimage.kind"))
   (shutdown-agents)

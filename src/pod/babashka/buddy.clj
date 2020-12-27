@@ -4,6 +4,7 @@
             [buddy.core.codecs :as codecs]
             [buddy.core.hash :as hash]
             [buddy.core.mac :as mac]
+            [buddy.core.nonce :as nonce]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.walk :as walk])
@@ -42,11 +43,16 @@
 (defn hash [s opts]
   (String. ^bytes (codecs/bytes->b64 (mac/hash s opts)) "utf-8"))
 
+(defn random-bytes [i]
+  (String. ^bytes (codecs/bytes->b64 (nonce/random-bytes i)) "utf-8"))
+
 (def lookup*
-  {'pod.babashka.buddy.core.hash
+  {'pod.babashka.buddy.hash
    {'sha256           sha256}
-   'pod.babashka.buddy.core.mac
-   {'hash             hash}})
+   'pod.babashka.buddy.mac
+   {'hash             hash}
+   'pod.babashka.buddy.nonce
+   {'random-bytes     random-bytes}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -59,14 +65,18 @@
      (if (ident? v) (name v)
          v))
    `{:format :edn
-     :namespaces [{:name pod.babashka.buddy.core.hash
+     :namespaces [{:name pod.babashka.buddy.hash
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.core.hash))}
-                  {:name pod.babashka.buddy.core.mac
+                                (get lookup* 'pod.babashka.buddy.hash))}
+                  {:name pod.babashka.buddy.mac
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.core.mac))}]}))
+                                (get lookup* 'pod.babashka.buddy.mac))}
+                  {:name pod.babashka.buddy.nonce
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.nonce))}]}))
 
 
 (defn -main [& _args]
