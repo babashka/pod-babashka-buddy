@@ -8,9 +8,9 @@
 
 ### pod.babashka.buddy.core.mac
 
-- `hash`: `(hash input engine-or-options)`. Generate hmac digest for arbitrary
-  input data, a secret key and hash algorithm. If algorithm is not supplied,
-  sha256 will be used as default value.
+- `hash`: `(hash input engine-or-options)`. Generate hmac digest as base64
+  string for string input data, a secret key and hash algorithm. If algorithm
+  is not supplied, sha256 will be used as default value.
 
 ## Example
 
@@ -21,11 +21,13 @@
 
 (require '[pod.babashka.buddy.core.hash :as h])
 
-(prn (h/sha256 "foo")) ;;=> "LCa0a2j/xo/5m0U8HTBBNBNCLXBkg7+g+YpeiGJm564="
+(prn (h/sha256 "foo"))
+;;=> "LCa0a2j/xo/5m0U8HTBBNBNCLXBkg7+g+YpeiGJm564="
 
 (require '[pod.babashka.buddy.core.mac :as mac])
 
-(prn (mac/hash "foo bar" {:key "mysecretkey" :alg :hmac+sha256})) ;;=> "YYSUSL27Z7OdYJRx7q1mfmWw0bngGxw796pWuD6cgIM="
+(prn (mac/hash "foo bar" {:key "mysecretkey" :alg :hmac+sha256}))
+;;=> "YYSUSL27Z7OdYJRx7q1mfmWw0bngGxw796pWuD6cgIM="
 ```
 
 ## Build
