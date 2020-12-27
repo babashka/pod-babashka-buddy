@@ -15,7 +15,7 @@
 
 #### pod.babashka.buddy.nonce
 
-- `random-bytes: `(random-bytes numbytes)`. Returns random bytes as base64 string.
+- `random-bytes`: `(random-bytes numbytes)`. Returns random bytes as base64 string.
 
 ## Example
 
