@@ -13,7 +13,7 @@
   string for string input data, a secret key and hash algorithm. If algorithm
   is not supplied, sha256 will be used as default value.
 
-#### pod.babashka.buddy.nonce
+### pod.babashka.buddy.nonce
 
 - `random-bytes`: `(random-bytes numbytes)`. Returns random bytes as base64 string.
 
