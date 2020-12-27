@@ -36,27 +36,44 @@
 (defn read [stream]
   (bencode/read-bencode stream))
 
-;; (defn ->b64 [^bytes bs]
-;;   (String. ^bytes (codecs/bytes>b64 bs) "utf-8"))
-
-;; (defn sha256 [s]
-;;   (->b64 (codecs/bytes->b64 (hash/sha256 s))))
-
-;; (defn hash [s opts]
-;;   (->b64 (codecs/bytes->b64 (mac/hash s opts))))
-
-;; (defn random-bytes [i]
-;;   (String. ^bytes (codecs/bytes->b64 (nonce/random-bytes i)) "utf-8"))
-
 (def lookup*
   {'pod.babashka.buddy.hash
-   {'sha256 hash/sha256}
+   {'ripemd256 hash/ripemd256
+    'sha3-512 hash/sha3-512
+    'blake2b hash/blake2b
+    'md5 hash/md5
+    'skein-1024 hash/skein-1024
+    'blake2b-128 hash/blake2b-128
+    'ripemd128 hash/ripemd128
+    'ripemd320 hash/ripemd320
+    'skein-256 hash/skein-256
+    'skein-512 hash/skein-512
+    'blake2b-512 'hash/blake2b-512
+    'sha3-384 hash/sha3-384
+    'whirlpool hash/whirlpool
+    'blake2b-256 hash/blake2b-256
+    'digest hash/digest
+    'sha3-256 hash/sha3-256
+    'sha1 hash/sha1
+    'sha384 hash/sha384
+    'skein hash/skein
+    'sha512 hash/sha512
+    'ripemd160 hash/ripemd160
+    'sha256 hash/sha256}
    'pod.babashka.buddy.mac
-   {'hash mac/hash}
+   {'hash mac/hash
+    'verify mac/verify}
    'pod.babashka.buddy.nonce
-   {'random-bytes nonce/random-bytes}
+   {'random-bytes nonce/random-bytes
+    'random-nonce nonce/random-nonce}
    'pod.babashka.buddy.codecs
-   {'bytes->hex codecs/bytes->hex}})
+   {'bytes->hex codecs/bytes->hex
+    'bytes->long codecs/bytes->long
+    'bytes->str codecs/bytes->str
+    'hex->bytes codecs/hex->bytes
+    'long->bytes codecs/long->bytes
+    'str->bytes codecs/str->bytes
+    'to-bytes codecs/to-bytes}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
