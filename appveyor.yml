@@ -11,8 +11,8 @@ environment:
   BABASHKA_XMX: "-J-Xmx5g"
 
 cache:
-  - C:\ProgramData\chocolatey\lib -> project.clj, appveyor.yml
-  - '%USERPROFILE%\.m2 -> project.clj'
+  - '%USERPROFILE%\.m2 -> deps.edn'
+  - '%USERPROFILE%\.gitlibs -> deps.edn'
   - 'graalvm -> appveyor.yml'
 
 clone_script:

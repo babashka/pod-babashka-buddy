@@ -16,18 +16,12 @@ echo Please set GRAALVM_HOME
 exit /b
 )
 
-if not exist "classes" mkdir classes
-call bb --clojure -M:native -e "(compile 'pod.babashka.buddy)"
-echo "classes;" > .classpath
-bb --clojure -Spath -A:native >> .classpath
-set /P NATIVE_CLASSPATH=<.classpath
-
-bb --classpath "%NATIVE_CLASSPATH%" --uberjar native.jar
+bb --clojure -X:native:uberjar
 
 call %GRAALVM_HOME%\bin\gu.cmd install native-image
 
 call %GRAALVM_HOME%\bin\native-image.cmd ^
-  "-cp" "native.jar" ^
+  "-cp" "pod-babashka-buddy.jar" ^
   "-H:Name=pod-babashka-buddy" ^
   "-H:+ReportExceptionStackTraces" ^
   "--initialize-at-build-time" ^
@@ -38,8 +32,6 @@ call %GRAALVM_HOME%\bin\native-image.cmd ^
   "--no-server" ^
   "-J-Xmx3g" ^
   "pod.babashka.buddy"
-
-del .classpath
 
 if %errorlevel% neq 0 exit /b %errorlevel%
 

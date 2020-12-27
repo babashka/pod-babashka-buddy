@@ -4,3 +4,4 @@ pom.xml
 .lein-failures
 classes
 /pod-babashka-buddy
+/pod-babashka-buddy.jar

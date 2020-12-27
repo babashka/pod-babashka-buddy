@@ -7,15 +7,12 @@ if [ -z "$GRAALVM_HOME" ]; then
     exit 1
 fi
 
-rm -rf classes && mkdir -p classes
-clojure -M:native \
-        -e '(println :direct-linking (System/getProperty "clojure.compiler.direct-linking"))' \
-        -e "(compile 'pod.babashka.buddy)"
+clojure -X:native:uberjar
 
 "$GRAALVM_HOME/bin/gu" install native-image
 
 "$GRAALVM_HOME/bin/native-image" \
-    -cp "classes:$(clojure -Spath -A:native)" \
+    -cp "pod-babashka-buddy.jar" \
     -H:Name=pod-babashka-buddy \
     -H:+ReportExceptionStackTraces \
     --initialize-at-build-time  \
