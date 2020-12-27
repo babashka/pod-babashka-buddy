@@ -5,19 +5,13 @@
 This pod uses the namespace scheme `buddy.x` -> `pod.babashka.buddy.x`.
 For buddy's documentation, go [here](https://funcool.github.io/buddy-core/latest/api/index.html).
 
-Available functions:
+Available namespaces:
 
-### pod.babashka.buddy.hash
+- `pod.babashka.buddy.hash`
+- `pod.babashka.buddy.mac`
+- `pod.babashka.buddy.nonce`
 
-- `sha256`
-
-### pod.babashka.buddy.mac
-
-- `hash`
-
-### pod.babashka.buddy.nonce
-
-- `random-bytes`
+If you are missing functionality, please create an issue.
 
 ## Example
 

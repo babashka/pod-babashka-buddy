@@ -148,7 +148,7 @@
                             (let [reply {"ex-message" (ex-message e)
                                          "ex-data" (write-transit
                                                     (assoc (ex-data e)
-                                                           :type (class e)))
+                                                           :type (str (class e))))
                                          "id" id
                                          "status" ["done" "error"]}]
                               (write stdout reply))))
