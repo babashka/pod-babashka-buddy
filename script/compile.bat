@@ -20,16 +20,14 @@ set PATH=%USERPROFILE%\deps.clj;%PATH%
 
 if not exist "classes" mkdir classes
 call deps -M:native -e "(compile 'pod.babashka.buddy)"
-deps -Spath -A:native > .classpath
+echo "classes;" > .classpath
+deps -Spath -A:native >> .classpath
 set /P NATIVE_CLASSPATH=<.classpath
-
-echo "classpath:"
-type .classpath
 
 call %GRAALVM_HOME%\bin\gu.cmd install native-image
 
 call %GRAALVM_HOME%\bin\native-image.cmd ^
-  "-cp" "classes;%NATIVE_CLASSPATH%" ^
+  "-cp" "@.classpath" ^
   "-H:Name=pod-babashka-buddy" ^
   "-H:+ReportExceptionStackTraces" ^
   "--initialize-at-build-time" ^
