@@ -1,15 +1,13 @@
 (ns pod.babashka.buddy
-  (:refer-clojure :exclude [read read-string])
+  (:refer-clojure :exclude [read read-string hash])
   (:require [bencode.core :as bencode]
-            [buddy.core.hash :as hash]
             [buddy.core.codecs :as codecs]
+            [buddy.core.hash :as hash]
+            [buddy.core.mac :as mac]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.walk :as walk]
-            )
-  (:import [java.io PushbackInputStream]
-           [java.net ServerSocket])
+            [clojure.walk :as walk])
+  (:import [java.io PushbackInputStream])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -38,11 +36,17 @@
   (bencode/read-bencode stream))
 
 (defn sha256 [s]
-  (codecs/bytes->hex (hash/sha256 s)))
+  (debug :x256 (codecs/bytes->b64 (hash/sha256 s)))
+  (String. ^bytes (codecs/bytes->b64 (hash/sha256 s)) "utf-8"))
+
+(defn hash [s opts]
+  (String. ^bytes (codecs/bytes->b64 (mac/hash s opts)) "utf-8"))
 
 (def lookup*
   {'pod.babashka.buddy.core.hash
-   {'sha256           sha256}})
+   {'sha256           sha256}
+   'pod.babashka.buddy.core.mac
+   {'hash             hash}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -58,7 +62,11 @@
      :namespaces [{:name pod.babashka.buddy.core.hash
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.core.hash))}]}))
+                                (get lookup* 'pod.babashka.buddy.core.hash))}
+                  {:name pod.babashka.buddy.core.mac
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.core.mac))}]}))
 
 
 (defn -main [& _args]

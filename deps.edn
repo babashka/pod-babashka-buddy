@@ -1,4 +1,6 @@
 {:deps {buddy/buddy-core {:mvn/version "1.9.0"}
-        nrepl/bencode {:mvn/version "1.1.0"}}
+        nrepl/bencode {:mvn/version "1.1.0"}
+        babashka/pods {:git/url "https://github.com/babashka/pods"
+                       :sha "22f200ef3006da90971e3bafa794985918b65fea"}}
  :aliases {:native {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]
                     :extra-deps {org.clojure/clojure {:mvn/version "1.10.2-rc1"}}}}}
