@@ -13,6 +13,10 @@ jobs:
       LEIN_ROOT: "true"
     steps:
       - checkout
+      - run:
+          name: Get rid of erroneous git config
+          command: |
+              rm -rf /home/circleci/.gitconfig
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "deps.edn" }}
@@ -43,6 +47,10 @@ jobs:
       APP_TEST_ENV: native
     steps:
       - checkout
+      - run:
+          name: Get rid of erroneous git config
+          command: |
+              rm -rf /home/circleci/.gitconfig
       - restore_cache:
           keys:
             - linux-{{ checksum "deps.edn" }}-{{ checksum ".circleci/config.yml" }}
@@ -99,6 +107,10 @@ jobs:
       APP_TEST_ENV: native
     steps:
       - checkout
+      - run:
+          name: Get rid of erroneous git config
+          command: |
+              rm -rf /home/circleci/.gitconfig
       - restore_cache:
           keys:
             - mac-{{ checksum "deps.edn" }}-{{ checksum ".circleci/config.yml" }}
@@ -153,6 +165,10 @@ jobs:
       LEIN_ROOT: "true"
     steps:
       - checkout
+      - run:
+          name: Get rid of erroneous git config
+          command: |
+              rm -rf /home/circleci/.gitconfig
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "deps.edn" }}
