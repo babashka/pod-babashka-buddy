@@ -1,9 +1,9 @@
-# Pod-babashka-buddy
+# pod-babashka-buddy
 
 ## API
 
 This pod uses the namespace scheme `buddy.x` -> `pod.babashka.buddy.x`.
-For documentation of buddy, go [here](https://funcool.github.io/buddy-core/latest/api/index.html).
+For buddy's documentation, go [here](https://funcool.github.io/buddy-core/latest/api/index.html).
 
 Available functions:
 
