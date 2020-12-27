@@ -5,9 +5,9 @@
             [buddy.core.hash :as hash]
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
-            [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clojure.walk :as walk])
+            [clojure.walk :as walk]
+            [cognitect.transit :as transit])
   (:import [java.io PushbackInputStream])
   (:gen-class))
 
@@ -36,23 +36,27 @@
 (defn read [stream]
   (bencode/read-bencode stream))
 
-(defn sha256 [s]
-  (debug :x256 (codecs/bytes->b64 (hash/sha256 s)))
-  (String. ^bytes (codecs/bytes->b64 (hash/sha256 s)) "utf-8"))
+;; (defn ->b64 [^bytes bs]
+;;   (String. ^bytes (codecs/bytes>b64 bs) "utf-8"))
 
-(defn hash [s opts]
-  (String. ^bytes (codecs/bytes->b64 (mac/hash s opts)) "utf-8"))
+;; (defn sha256 [s]
+;;   (->b64 (codecs/bytes->b64 (hash/sha256 s))))
 
-(defn random-bytes [i]
-  (String. ^bytes (codecs/bytes->b64 (nonce/random-bytes i)) "utf-8"))
+;; (defn hash [s opts]
+;;   (->b64 (codecs/bytes->b64 (mac/hash s opts))))
+
+;; (defn random-bytes [i]
+;;   (String. ^bytes (codecs/bytes->b64 (nonce/random-bytes i)) "utf-8"))
 
 (def lookup*
   {'pod.babashka.buddy.hash
-   {'sha256           sha256}
+   {'sha256 hash/sha256}
    'pod.babashka.buddy.mac
-   {'hash             hash}
+   {'hash mac/hash}
    'pod.babashka.buddy.nonce
-   {'random-bytes     random-bytes}})
+   {'random-bytes nonce/random-bytes}
+   'pod.babashka.buddy.codecs
+   {'bytes->hex codecs/bytes->hex}})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -64,7 +68,7 @@
    (fn [v]
      (if (ident? v) (name v)
          v))
-   `{:format :edn
+   `{:format :transit+json
      :namespaces [{:name pod.babashka.buddy.hash
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
@@ -76,8 +80,22 @@
                   {:name pod.babashka.buddy.nonce
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.nonce))}]}))
+                                (get lookup* 'pod.babashka.buddy.nonce))}
+                  {:name pod.babashka.buddy.codecs
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.codecs))}]}))
 
+(defn read-transit [^String v]
+  (transit/read
+   (transit/reader
+    (java.io.ByteArrayInputStream. (.getBytes v "utf-8"))
+    :json)))
+
+(defn write-transit [v]
+  (let [baos (java.io.ByteArrayOutputStream.)]
+    (transit/write (transit/writer baos :json) v)
+    (.toString baos "utf-8")))
 
 (defn -main [& _args]
   (loop []
@@ -100,9 +118,9 @@
                                         symbol)
                                 args (get message "args")
                                 args (read-string args)
-                                args (edn/read-string args)]
+                                args (read-transit args)]
                             (if-let [f (lookup var)]
-                              (let [value (pr-str (apply f args))
+                              (let [value (write-transit (apply f args))
                                     reply {"value" value
                                            "id" id
                                            "status" ["done"]}]
@@ -111,7 +129,7 @@
                           (catch Throwable e
                             (debug e)
                             (let [reply {"ex-message" (ex-message e)
-                                         "ex-data" (pr-str
+                                         "ex-data" (write-transit
                                                     (assoc (ex-data e)
                                                            :type (class e)))
                                          "id" id

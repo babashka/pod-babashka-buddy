@@ -2,20 +2,22 @@
 
 ## API
 
-### pod.babashka.buddy.core.hash
+This pod uses the namespace scheme `buddy.x` -> `pod.babashka.buddy.x`.
+For documentation of buddy, go [here](https://funcool.github.io/buddy-core/latest/api/index.html).
 
-- `sha256`: `(sha-256 input)`. Converts input string to base64 string encoded as
-  sha256.
+Available functions:
 
-### pod.babashka.buddy.core.mac
+### pod.babashka.buddy.hash
 
-- `hash`: `(hash input engine-or-options)`. Generate hmac digest as base64
-  string for string input data, a secret key and hash algorithm. If algorithm
-  is not supplied, sha256 will be used as default value.
+- `sha256`
+
+### pod.babashka.buddy.mac
+
+- `hash`
 
 ### pod.babashka.buddy.nonce
 
-- `random-bytes`: `(random-bytes numbytes)`. Returns random bytes as base64 string.
+- `random-bytes`
 
 ## Example
 
@@ -24,15 +26,20 @@
 
 (pods/load-pod "./pod-babashka-buddy")
 
-(require '[pod.babashka.buddy.hash :as h])
+(require '[clojure.string :as str]
+         '[pod.babashka.buddy.codecs :as codecs]
+         '[pod.babashka.buddy.mac :as mac]
+         '[pod.babashka.buddy.nonce :as nonce])
 
-(prn (h/sha256 "foo"))
-;;=> "LCa0a2j/xo/5m0U8HTBBNBNCLXBkg7+g+YpeiGJm564="
+(def hash-algorithm :hmac+sha256)
+(def secret (nonce/random-bytes 64))
 
-(require '[pod.babashka.buddy.mac :as mac])
-
-(prn (mac/hash "foo bar" {:key "mysecretkey" :alg :hmac+sha256}))
-;;=> "YYSUSL27Z7OdYJRx7q1mfmWw0bngGxw796pWuD6cgIM="
+(let [timestamp (System/currentTimeMillis)
+      nonce (nonce/random-bytes 64)
+      nonce-hex (codecs/bytes->hex nonce)
+      payload (pr-str {:nonce nonce-hex :timestamp timestamp})
+      signature (codecs/bytes->hex (mac/hash payload {:alg hash-algorithm :key secret}))]
+  (prn (str/join "-" [nonce-hex timestamp signature])))
 ```
 
 ## Build
