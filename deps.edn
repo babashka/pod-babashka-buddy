@@ -6,7 +6,7 @@
  :aliases {:uberjar
            {:replace-deps ; tool usage is new in 2.x
             {seancorfield/depstar {:git/url "https://github.com/borkdude/depstar"
-                                   :sha "70ce150dfd3072f8f7ffbad21233139b3cde388d"}
+                                   :sha "f3412f0a940295a0bdb75cdcd692c1b88538729e"}
              #_{:mvn/version "2.0.161"}}
             :ns-default hf.depstar
             :exec-fn uberjar
