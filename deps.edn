@@ -5,12 +5,11 @@
                        :sha "22f200ef3006da90971e3bafa794985918b65fea"}}
  :aliases {:uberjar
            {:replace-deps ; tool usage is new in 2.x
-            {seancorfield/depstar {:git/url "https://github.com/borkdude/depstar"
-                                   :sha "f3412f0a940295a0bdb75cdcd692c1b88538729e"}
-             #_{:mvn/version "2.0.161"}}
+            {seancorfield/depstar {:mvn/version "2.0.165"}}
             :ns-default hf.depstar
             :exec-fn uberjar
             :exec-args {:jar pod-babashka-buddy.jar
-                        :compile-ns [pod.babashka.buddy]}}
+                        :compile-ns [pod.babashka.buddy]
+                        :aliases [:native]}}
            :native {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]
                     :extra-deps {org.clojure/clojure {:mvn/version "1.10.2-rc1"}}}}}
