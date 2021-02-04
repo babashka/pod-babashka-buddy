@@ -18,7 +18,7 @@ If you are missing functionality, please create an issue.
 ``` clojure
 (require '[babashka.pods :as pods])
 
-(pods/load-pod "./pod-babashka-buddy")
+(pods/load-pod 'org.babashka/buddy "0.0.1")
 
 (require '[clojure.string :as str]
          '[pod.babashka.buddy.codecs :as codecs]
