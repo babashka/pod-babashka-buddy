@@ -7,11 +7,29 @@ For buddy's documentation, go [here](https://funcool.github.io/buddy-core/latest
 
 Available namespaces:
 
-- `pod.babashka.buddy.hash`
-- `pod.babashka.buddy.mac`
-- `pod.babashka.buddy.nonce`
+- `pod.babashka.buddy.core.hash`
+- `pod.babashka.buddy.core.mac`
+- `pod.babashka.buddy.core.nonce`
+- `pod.babashka.buddy.core.kdf`
+- `pod.babashka.buddy.sign.jwe`
 
 If you are missing functionality, please create an issue.
+
+### KDF
+
+Note that `pod.babashka.buddy.core.kdf` deviates from buddy's documented API
+because the `buddy.core.kdf/engine` fn returns an instance of
+`org.bouncycastle.crypto.generators.HKDFBytesGenerator` which can't be
+serialized back to the pod client.
+
+Instead we wrap engine results in a call to `buddy.core.kdf/get-bytes` and
+return the byte array.
+
+The fn that does this is named `pod.babashka.buddy.core.kdf/get-bytes-from-engine`
+and that is all that this pod exposes from that namespace.
+
+You call it with a map just like `engine`, but you need to add a `:length` key
+that gets passed to `buddy.core.kdf/get-bytes`.
 
 ## Example
 
@@ -21,9 +39,9 @@ If you are missing functionality, please create an issue.
 (pods/load-pod 'org.babashka/buddy "0.0.1")
 
 (require '[clojure.string :as str]
-         '[pod.babashka.buddy.codecs :as codecs]
-         '[pod.babashka.buddy.mac :as mac]
-         '[pod.babashka.buddy.nonce :as nonce])
+         '[pod.babashka.buddy.core.codecs :as codecs]
+         '[pod.babashka.buddy.core.mac :as mac]
+         '[pod.babashka.buddy.core.nonce :as nonce])
 
 (def hash-algorithm :hmac+sha256)
 (def secret (nonce/random-bytes 64))
