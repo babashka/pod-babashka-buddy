@@ -5,6 +5,8 @@
             [buddy.core.hash :as hash]
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
+            [pod.babashka.buddy.kdf :as kdf]
+            [buddy.sign.jwe :as jwe]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
             [cognitect.transit :as transit])
@@ -36,8 +38,8 @@
 (defn read [stream]
   (bencode/read-bencode stream))
 
-(def lookup*
-  {'pod.babashka.buddy.hash
+(def nses
+  {:core/hash
    {'ripemd256 hash/ripemd256
     'sha3-512 hash/sha3-512
     'blake2b hash/blake2b
@@ -60,20 +62,52 @@
     'sha512 hash/sha512
     'ripemd160 hash/ripemd160
     'sha256 hash/sha256}
-   'pod.babashka.buddy.mac
+   :core/mac
    {'hash mac/hash
     'verify mac/verify}
-   'pod.babashka.buddy.nonce
+   :core/nonce
    {'random-bytes nonce/random-bytes
     'random-nonce nonce/random-nonce}
-   'pod.babashka.buddy.codecs
+   :core/codecs
    {'bytes->hex codecs/bytes->hex
     'bytes->long codecs/bytes->long
     'bytes->str codecs/bytes->str
     'hex->bytes codecs/hex->bytes
     'long->bytes codecs/long->bytes
     'str->bytes codecs/str->bytes
-    'to-bytes codecs/to-bytes}})
+    'to-bytes codecs/to-bytes}
+   :core/kdf
+   {'get-bytes-from-engine kdf/get-bytes-from-engine}
+   :sign/jwe
+   {'aead-decrypt jwe/aead-decrypt
+    'aead-encrypt jwe/aead-encrypt
+    'decode jwe/decode
+    'decode-header jwe/decode-header
+    'decrypt jwe/decrypt
+    'encode jwe/encode
+    'encrypt jwe/encrypt}})
+
+(def lookup*
+  {'pod.babashka.buddy.hash
+   (:core/hash nses)
+   'pod.babashka.buddy.core.hash
+   (:core/hash nses)
+   'pod.babashka.buddy.mac
+   (:core/mac nses)
+   'pod.babashka.buddy.core.mac
+   (:core/mac nses)
+   'pod.babashka.buddy.nonce
+   (:core/nonce nses)
+   'pod.babashka.buddy.core.nonce
+   (:core/nonce nses)
+   'pod.babashka.buddy.codecs
+   (:core/codecs nses)
+   'pod.babashka.buddy.core.codecs
+   (:core/codecs nses)
+   'pod.babashka.buddy.core.kdf
+   (:core/kdf nses)
+   'pod.babashka.buddy.sign.jwe
+   (:sign/jwe nses)})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -90,18 +124,42 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.hash))}
+                  {:name pod.babashka.buddy.core.hash
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.core.hash))}
                   {:name pod.babashka.buddy.mac
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.mac))}
+                  {:name pod.babashka.buddy.core.mac
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.core.mac))}
                   {:name pod.babashka.buddy.nonce
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.nonce))}
+                  {:name pod.babashka.buddy.core.nonce
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.core.nonce))}
                   {:name pod.babashka.buddy.codecs
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.codecs))}]}))
+                                (get lookup* 'pod.babashka.buddy.codecs))}
+                  {:name pod.babashka.buddy.core.codecs
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.core.codecs))}
+                  {:name pod.babashka.buddy.core.kdf
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.core.kdf))}
+                  {:name pod.babashka.buddy.sign.jwe
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.sign.jwe))}]}))
 
 (defn read-transit [^String v]
   (transit/read

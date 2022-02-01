@@ -1,15 +1,16 @@
-{:deps {com.cognitect/transit-clj {:mvn/version "1.0.324"}
-        buddy/buddy-core {:mvn/version "1.9.0"}
-        nrepl/bencode {:mvn/version "1.1.0"}
-        babashka/pods {:git/url "https://github.com/babashka/pods"
-                       :sha "22f200ef3006da90971e3bafa794985918b65fea"}}
+{:deps    {com.cognitect/transit-clj {:mvn/version "1.0.324"}
+           buddy/buddy-core          {:mvn/version "1.10.413"}
+           buddy/buddy-sign          {:mvn/version "3.4.1"}
+           nrepl/bencode             {:mvn/version "1.1.0"}
+           babashka/pods             {:git/url "https://github.com/babashka/pods"
+                                      :sha     "22f200ef3006da90971e3bafa794985918b65fea"}}
  :aliases {:uberjar
            {:replace-deps ; tool usage is new in 2.x
             {seancorfield/depstar {:mvn/version "2.0.165"}}
             :ns-default hf.depstar
-            :exec-fn uberjar
-            :exec-args {:jar pod-babashka-buddy.jar
-                        :compile-ns [pod.babashka.buddy]
-                        :aliases [:native]}}
-           :native {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]
-                    :extra-deps {org.clojure/clojure {:mvn/version "1.10.2-rc1"}}}}}
+            :exec-fn    uberjar
+            :exec-args  {:jar        pod-babashka-buddy.jar
+                         :compile-ns [pod.babashka.buddy]
+                         :aliases    [:native]}}
+           :native {:jvm-opts   ["-Dclojure.compiler.direct-linking=true"]
+                    :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}}}}}
