@@ -25,7 +25,7 @@ serialized back to the pod client.
 Instead we wrap engine results in a call to `buddy.core.kdf/get-bytes` and
 return the byte array.
 
-The fn that does this is named `pod.babashka.buddy.core.kdf/get-bytes-from-engine`
+The fn that does this is named `pod.babashka.buddy.core.kdf/get-engine-bytes`
 and that is all that this pod exposes from that namespace.
 
 You call it with a map just like `engine`, but you need to add a `:length` key

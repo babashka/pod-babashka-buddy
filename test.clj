@@ -33,8 +33,8 @@
 
 (require '[pod.babashka.buddy.core.kdf :as kdf])
 
-(let [key-bytes (kdf/get-bytes-from-engine {:alg :hkdf+sha256 :key "supersecret" :salt "sea"
-                                            :info "babashka rocks!" :length 32})
+(let [key-bytes (kdf/get-engine-bytes {:alg :hkdf+sha256 :key "supersecret" :salt "sea"
+                                       :info "babashka rocks!" :length 32})
       key-hex (codecs/bytes->hex key-bytes)]
   (assert (= "5189451aed99c4acf6c3573f5eec223a13ab0840bb0138c4080ab87bdf7d0ebc"
              key-hex))

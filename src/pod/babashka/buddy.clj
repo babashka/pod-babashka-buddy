@@ -77,7 +77,7 @@
     'str->bytes codecs/str->bytes
     'to-bytes codecs/to-bytes}
    :core/kdf
-   {'get-bytes-from-engine kdf/get-bytes-from-engine}
+   {'get-engine-bytes kdf/get-engine-bytes}
    :sign/jwe
    {'aead-decrypt jwe/aead-decrypt
     'aead-encrypt jwe/aead-encrypt
