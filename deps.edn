@@ -4,13 +4,10 @@
            nrepl/bencode             {:mvn/version "1.1.0"}
            babashka/pods             {:git/url "https://github.com/babashka/pods"
                                       :sha     "22f200ef3006da90971e3bafa794985918b65fea"}}
- :aliases {:uberjar
-           {:replace-deps ; tool usage is new in 2.x
-            {seancorfield/depstar {:mvn/version "2.0.165"}}
-            :ns-default hf.depstar
-            :exec-fn    uberjar
-            :exec-args  {:jar        pod-babashka-buddy.jar
-                         :compile-ns [pod.babashka.buddy]
-                         :aliases    [:native]}}
-           :native {:jvm-opts   ["-Dclojure.compiler.direct-linking=true"]
-                    :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}}}}}
+
+ :aliases {:native {:jvm-opts   ["-Dclojure.compiler.direct-linking=true"]
+                    :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}}}
+
+           :build ;; added by neil
+           {:deps {io.github.clojure/tools.build {:git/tag "v0.7.5" :git/sha "34727f7"}}
+            :ns-default build}}}

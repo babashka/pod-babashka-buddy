@@ -1,0 +1,1 @@
+{:tasks {uber (clojure "-T:build uber")}}

@@ -7,19 +7,32 @@ if [ -z "$GRAALVM_HOME" ]; then
     exit 1
 fi
 
-clojure -X:native:uberjar
+clojure -T:build uber
 
 "$GRAALVM_HOME/bin/gu" install native-image
 
-"$GRAALVM_HOME/bin/native-image" \
-    -cp "pod-babashka-buddy.jar" \
-    -H:Name=pod-babashka-buddy \
-    -H:+ReportExceptionStackTraces \
-    --initialize-at-build-time  \
-    -H:EnableURLProtocols=jar \
-    --report-unsupported-elements-at-runtime \
-    --verbose \
-    --no-fallback \
-    --no-server \
-    "-J-Xmx3g" \
-    pod.babashka.buddy
+args=(-jar "pod-babashka-buddy.jar"
+      -H:Name=pod-babashka-buddy
+      -H:+ReportExceptionStackTraces
+      --initialize-at-build-time
+      -H:EnableURLProtocols=jar
+      --report-unsupported-elements-at-runtime
+      --verbose
+      --no-fallback
+      --no-server
+      "-J-Xmx3g"
+     )
+
+if [ "$BABASHKA_STATIC" = "true" ]; then
+    args+=("--static")
+    if [ "$BABASHKA_MUSL" = "true" ]; then
+        args+=("--libc=musl"
+               # see https://github.com/oracle/graal/issues/3398
+               "-H:CCompilerOption=-Wl,-z,stack-size=2097152")
+    else
+        # see https://github.com/oracle/graal/issues/3737
+        args+=("-H:+StaticExecutableWithDynamicLibC")
+    fi
+fi
+
+"$GRAALVM_HOME/bin/native-image" "${args[@]}"
