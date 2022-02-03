@@ -258,6 +258,7 @@ workflows:
     jobs:
       - jvm
       - linux
+      - linux-aarch64
       - mac
       - deploy:
           filters:
@@ -266,6 +267,7 @@ workflows:
           requires:
             - jvm
             - linux
+            - linux-aarch64
             - mac
       # - docker:
       #     filters:
