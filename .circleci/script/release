@@ -9,7 +9,7 @@ cd /tmp/release
 
 ## release binary as zip archive
 
-zip "pod-babashka-buddy-$VERSION-$APP_PLATFORM-amd64.zip" pod-babashka-buddy
+zip "pod-babashka-buddy-$VERSION-$APP_PLATFORM-$APP_ARCH.zip" pod-babashka-buddy
 
 ## cleanup
 
