@@ -36,7 +36,7 @@ that gets passed to `buddy.core.kdf/get-bytes`.
 ``` clojure
 (require '[babashka.pods :as pods])
 
-(pods/load-pod 'org.babashka/buddy "0.0.1")
+(pods/load-pod 'org.babashka/buddy "0.1.0")
 
 (require '[clojure.string :as str]
          '[pod.babashka.buddy.core.codecs :as codecs]
