@@ -52,6 +52,11 @@
   (prn decrypted-jwe)
   (assert (= decrypted-jwe jwt-json)))
 
+(require '[pod.babashka.buddy.sign.jwt :as jwt])
+(let [claim {:iss "123456"}
+      jwt+rs256 (jwt/sign claim {:alg :rs256 :private-key "keys/private-key.pem"})]
+  (prn jwt+rs256))
+
 (when-not (= "executable" (System/getProperty "org.graalvm.nativeimage.kind"))
   (shutdown-agents)
   (System/exit 0))

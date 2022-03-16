@@ -6,11 +6,14 @@
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
             [pod.babashka.buddy.kdf :as kdf]
+            [pod.babashka.buddy.jwt :as jwt]
             [buddy.sign.jwe :as jwe]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
             [cognitect.transit :as transit])
-  (:import [java.io PushbackInputStream])
+  (:import [java.io PushbackInputStream]
+           [java.security Security]
+           [org.bouncycastle.jce.provider BouncyCastleProvider])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -85,7 +88,9 @@
     'decode-header jwe/decode-header
     'decrypt jwe/decrypt
     'encode jwe/encode
-    'encrypt jwe/encrypt}})
+    'encrypt jwe/encrypt}
+   :sign/jwt
+   {'sign jwt/sign}})
 
 (def lookup*
   {'pod.babashka.buddy.hash
@@ -107,7 +112,9 @@
    'pod.babashka.buddy.core.kdf
    (:core/kdf nses)
    'pod.babashka.buddy.sign.jwe
-   (:sign/jwe nses)})
+   (:sign/jwe nses)
+   'pod.babashka.buddy.sign.jwt
+   (:sign/jwt nses)})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -159,7 +166,11 @@
                   {:name pod.babashka.buddy.sign.jwe
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.sign.jwe))}]}))
+                                (get lookup* 'pod.babashka.buddy.sign.jwe))}
+                   {:name pod.babashka.buddy.sign.jwt
+                    :vars ~(mapv (fn [[k _]]
+                                   {:name k})
+                                 (get lookup* 'pod.babashka.buddy.sign.jwt))}]}))
 
 (defn read-transit [^String v]
   (transit/read
@@ -173,6 +184,7 @@
     (.toString baos "utf-8")))
 
 (defn -main [& _args]
+  (Security/addProvider (BouncyCastleProvider.))
   (loop []
     (let [message (try (read stdin)
                        (catch java.io.EOFException _
