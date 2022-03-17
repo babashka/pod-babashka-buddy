@@ -57,6 +57,13 @@
       jwt+rs256 (jwt/sign claim {:alg :rs256 :private-key "keys/private-key.pem"})]
   (prn jwt+rs256))
 
+(require '[pod.babashka.buddy.keys :as keys])
+(let [claim {:iss "123456"}
+      pkey (keys/private-key "keys/private-key.pem")
+      jwt+rs256 (jwt/sign2 claim pkey {:alg :rs256})]
+  (prn jwt+rs256))
+
+
 (when-not (= "executable" (System/getProperty "org.graalvm.nativeimage.kind"))
   (shutdown-agents)
   (System/exit 0))

@@ -7,6 +7,7 @@
             [buddy.core.nonce :as nonce]
             [pod.babashka.buddy.kdf :as kdf]
             [pod.babashka.buddy.jwt :as jwt]
+            [pod.babashka.buddy.keys :as keys]
             [buddy.sign.jwe :as jwe]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
@@ -65,6 +66,8 @@
     'sha512 hash/sha512
     'ripemd160 hash/ripemd160
     'sha256 hash/sha256}
+   :core/keys
+   {'private-key keys/private-key}
    :core/mac
    {'hash mac/hash
     'verify mac/verify}
@@ -90,13 +93,18 @@
     'encode jwe/encode
     'encrypt jwe/encrypt}
    :sign/jwt
-   {'sign jwt/sign}})
+   {'sign jwt/sign
+    'sign2 jwt/sign2}})
 
 (def lookup*
   {'pod.babashka.buddy.hash
    (:core/hash nses)
    'pod.babashka.buddy.core.hash
    (:core/hash nses)
+   'pod.babashka.buddy.keys
+   (:core/keys nses)
+   'pod.babashka.buddy.core.keys
+   (:core/keys nses)
    'pod.babashka.buddy.mac
    (:core/mac nses)
    'pod.babashka.buddy.core.mac
@@ -135,6 +143,14 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.core.hash))}
+                  {:name pod.babashka.buddy.keys
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                            (get lookup* 'pod.babashka.buddy.keys))}
+                  {:name pod.babashka.buddy.core.keys
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                            (get lookup* 'pod.babashka.buddy.core.keys))}
                   {:name pod.babashka.buddy.mac
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})

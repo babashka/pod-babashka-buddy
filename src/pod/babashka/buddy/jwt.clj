@@ -1,6 +1,8 @@
 (ns pod.babashka.buddy.jwt
   (:require [buddy.core.keys :as keys]
-            [buddy.sign.jwt  :as jwt]))
+            [buddy.sign.jwt  :as jwt])
+  (:import [java.security KeyFactory PrivateKey]
+           [java.security.spec PKCS8EncodedKeySpec]))
 
 
 
@@ -31,3 +33,15 @@
                       jwk->private-key (keys/jwk->private-key jwk->private-key)
                       str->private-key (keys/str->private-key str->private-key passphrase))]
     (jwt/sign claims private-key opts)))
+
+
+
+(defn sign2
+  ([claims ^bytes pkey]
+   (sign2 claims pkey nil))
+  ([claims ^bytes pkey opts]
+   ;; TODO: All algorithms
+   (let [^KeyFactory kf (KeyFactory/getInstance "RSA" "BC")
+         ^PKCS8EncodedKeySpec ks (PKCS8EncodedKeySpec. pkey)
+         ^PrivateKey pk (.generatePrivate kf ks)]
+     (jwt/sign claims pk opts))))

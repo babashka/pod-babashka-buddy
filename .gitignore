@@ -7,6 +7,6 @@ classes
 /pod-babashka-buddy.jar
 /pod-babashka-buddy.build_artifacts.txt
 .clj-kondo
-.lsp/.cache
+.cache
 .nrepl-port
 output.calva-repl
