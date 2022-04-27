@@ -91,12 +91,12 @@
     (assert (= header (merge header-data {:alg alg})))))
 
 (doseq [alg [:es512 :es384 :es256]]
-  (let [res1 (pjws/sign test-data ec-privkey {:alg alg})
-        res2 (pjws/unsign res1 ec-pubkey {:alg alg})]
+  (let [res1 (jws/sign test-data ec-privkey {:alg alg})
+        res2 (jws/unsign res1 ec-pubkey {:alg alg})]
     (assert (java.util.Arrays/equals res2 (codecs/to-bytes test-data)))))
 
 ;; -- JWT Tests --
-(require '[pod.babashka.buddy.jwt :as jwt])
+(require '[pod.babashka.buddy.sign.jwt :as jwt])
 
 (def secret (codecs/hex->bytes (str "000102030405060708090a0b0c0d0e0f"
                                  "101112131415161718191a1b1c1d1e1f")))

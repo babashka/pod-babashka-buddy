@@ -24,9 +24,10 @@ call %GRAALVM_HOME%\bin\native-image.cmd ^
   "-cp" "pod-babashka-buddy.jar" ^
   "-H:Name=pod-babashka-buddy" ^
   "-H:+ReportExceptionStackTraces" ^
-  "--initialize-at-build-time" ^
+  "--initialize-at-build-time=clojure,bencode,pod.babashka,buddy.core,buddy.sign,buddy.util,cheshire,com.fasterxml.jackson,cognitect" ^
   "-H:EnableURLProtocols=jar" ^
   "--report-unsupported-elements-at-runtime" ^
+  "-H:ReflectionConfigurationFiles=reflection-config.json" ^
   "--verbose" ^
   "--no-fallback" ^
   "--no-server" ^

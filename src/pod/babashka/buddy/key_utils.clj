@@ -12,13 +12,13 @@
 
 (extend-protocol Algo
   org.bouncycastle.crypto.params.RSAKeyParameters
-  (algo [this] "RSA")
+  (algo [_] "RSA")
   org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters
-  (algo [this] "RSA")
+  (algo [_] "RSA")
   org.bouncycastle.crypto.params.ECPrivateKeyParameters
-  (algo [this] "EC")
+  (algo [_] "EC")
   org.bouncycastle.crypto.params.ECPublicKeyParameters
-  (algo [this] "EC"))
+  (algo [_] "EC"))
 
 
 

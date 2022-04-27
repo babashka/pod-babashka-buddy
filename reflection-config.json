@@ -1,5 +1,25 @@
 [
   {
+    "name" : "java.security.KeyFactory",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "clojure.lang.RT",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.crypto.util.PrivateKeyFactory",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.crypto.util.PublicKeyFactory",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
     "name" : "org.bouncycastle.jcajce.provider.asymmetric.rsa.KeyFactorySpi",
     "allPublicConstructors" : true,
     "allPublicMethods" : true

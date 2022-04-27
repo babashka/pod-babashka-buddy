@@ -14,9 +14,7 @@
             [clojure.java.io :as io]
             [clojure.walk :as walk]
             [cognitect.transit :as transit])
-  (:import [java.io PushbackInputStream]
-           [java.security Security]
-           [org.bouncycastle.jce.provider BouncyCastleProvider])
+  (:import [java.io PushbackInputStream])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -218,7 +216,6 @@
     (.toString baos "utf-8")))
 
 (defn -main [& _args]
-  (Security/addProvider (BouncyCastleProvider.))
   (loop []
     (let [message (try (read stdin)
                        (catch java.io.EOFException _
