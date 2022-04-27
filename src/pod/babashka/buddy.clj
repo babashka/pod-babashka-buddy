@@ -6,9 +6,11 @@
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
             [pod.babashka.buddy.kdf :as kdf]
+            [pod.babashka.buddy.jws :as pjws]
             [pod.babashka.buddy.jwt :as jwt]
             [pod.babashka.buddy.keys :as keys]
             [buddy.sign.jwe :as jwe]
+            [buddy.sign.jws :as jws]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
             [cognitect.transit :as transit])
@@ -67,7 +69,8 @@
     'ripemd160 hash/ripemd160
     'sha256 hash/sha256}
    :core/keys
-   {'private-key keys/private-key}
+   {'private-key keys/private-key
+    'public-key  keys/public-key}
    :core/mac
    {'hash mac/hash
     'verify mac/verify}
@@ -92,9 +95,18 @@
     'decrypt jwe/decrypt
     'encode jwe/encode
     'encrypt jwe/encrypt}
+   :sign/jws
+   {'decode jws/decode
+    'decode-header jws/decode-header
+    'encode jws/encode
+    'sign   pjws/sign
+    'unsign pjws/unsign
+    }
    :sign/jwt
    {'sign jwt/sign
-    'sign2 jwt/sign2}})
+    'unsign jwt/unsign
+    'encrypt jwt/encrypt
+    'decrypt jwt/decrypt}})
 
 (def lookup*
   {'pod.babashka.buddy.hash
@@ -121,6 +133,8 @@
    (:core/kdf nses)
    'pod.babashka.buddy.sign.jwe
    (:sign/jwe nses)
+   'pod.babashka.buddy.sign.jws
+   (:sign/jws nses)
    'pod.babashka.buddy.sign.jwt
    (:sign/jwt nses)})
 
@@ -183,6 +197,10 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.sign.jwe))}
+                   {:name pod.babashka.buddy.sign.jws
+                    :vars ~(mapv (fn [[k _]]
+                                   {:name k})
+                             (get lookup* 'pod.babashka.buddy.sign.jws))}
                    {:name pod.babashka.buddy.sign.jwt
                     :vars ~(mapv (fn [[k _]]
                                    {:name k})
