@@ -68,7 +68,14 @@
     'sha256 hash/sha256}
    :core/keys
    {'private-key keys/private-key
-    'public-key  keys/public-key}
+    'public-key  keys/public-key
+    'str->public-key keys/str->public-key
+    'str->private-key keys/str->private-key
+    'jwk keys/jwk
+    'jwk->private-key keys/jwk->private-key
+    'jwk->public-key keys/jwk->public-key
+    'public-key->jwk keys/public-key->jwk
+    'jwk-thumbprint keys/jwk-thumbprint}
    :core/mac
    {'hash mac/hash
     'verify mac/verify}
@@ -79,10 +86,14 @@
    {'bytes->hex codecs/bytes->hex
     'bytes->long codecs/bytes->long
     'bytes->str codecs/bytes->str
+    'bytes->b64 codecs/bytes->b64
+    'bytes->b64u codecs/bytes->b64u
     'hex->bytes codecs/hex->bytes
     'long->bytes codecs/long->bytes
     'str->bytes codecs/str->bytes
-    'to-bytes codecs/to-bytes}
+    'to-bytes codecs/to-bytes
+    'b64->bytes codecs/b64->bytes
+    'b64u->bytes codecs/b64u->bytes}
    :core/kdf
    {'get-engine-bytes kdf/get-engine-bytes}
    :sign/jwe

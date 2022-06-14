@@ -18,7 +18,15 @@
   org.bouncycastle.crypto.params.ECPrivateKeyParameters
   (algo [_] "EC")
   org.bouncycastle.crypto.params.ECPublicKeyParameters
-  (algo [_] "EC"))
+  (algo [_] "EC")
+  org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
+  (algo [_] "EdDSA")
+  org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
+  (algo [_] "EdDSA")
+  org.bouncycastle.crypto.params.Ed448PrivateKeyParameters
+  (algo [_] "EdDSA")
+  org.bouncycastle.crypto.params.Ed448PublicKeyParameters
+  (algo [_] "EdDSA"))
 
 
 
