@@ -31,6 +31,37 @@ and that is all that this pod exposes from that namespace.
 You call it with a map just like `engine`, but you need to add a `:length` key
 that gets passed to `buddy.core.kdf/get-bytes`.
 
+### Keys
+
+Note that `pod.babashka.buddy.core.keys` deviates from buddy's documented API
+because the function originally would return a Bouncy Castle key which can't
+be serialized back to the pod client.
+
+Instead the following functions will return the encoded byte-array of the key:
+  - `private-key`
+  - `public-key`
+  - `str->public-key`
+  - `str->private-key`
+  - `jwk->private-key`
+  - `jwk->public-key`
+
+### JWS
+
+Note that `pod.babashka.buddy.sign.jws` has some functions that have a key
+as a parameter, these deviate from buddy's documented API and now will expect
+a encoded byte-array of the key. The affected functions are:
+  - `sign`
+  - `unsign`
+
+### JWT
+Note that `pod.babashka.buddy.sign.jwt` has some functions that have a key
+as a parameter, these deviate from buddy's documented API and now will expect
+a encoded byte-array of the key. The affected functions are:
+  - `sign`
+  - `unsign`
+  - `encrypt`
+  - `decrypt`
+
 ## Example
 
 ``` clojure
