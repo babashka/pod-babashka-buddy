@@ -33,5 +33,17 @@
     "name" : "org.bouncycastle.jcajce.provider.asymmetric.RSA$Mappings",
     "allPublicConstructors" : true,
     "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPrivateKey",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
   }
 ]

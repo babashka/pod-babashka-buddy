@@ -10,9 +10,10 @@
 
 (defn uber [_]
   (clean nil)
-  (b/javac {:src-dirs  ["java"]
-            :class-dir class-dir
-            :basis     basis})
+  (b/javac {:src-dirs   ["java"]
+            :class-dir  class-dir
+            :basis      basis
+            :javac-opts ["-source" "8" "-target" "8"]})
   (b/copy-dir {:src-dirs ["src" "resources"]
                :target-dir class-dir})
   (b/compile-clj {:basis basis

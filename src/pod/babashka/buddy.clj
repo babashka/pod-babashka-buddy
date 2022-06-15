@@ -71,9 +71,9 @@
     'public-key  keys/public-key
     'str->public-key keys/str->public-key
     'str->private-key keys/str->private-key
-    'jwk keys/jwk
     'jwk->private-key keys/jwk->private-key
     'jwk->public-key keys/jwk->public-key
+    'jwk keys/jwk
     'public-key->jwk keys/public-key->jwk
     'jwk-thumbprint keys/jwk-thumbprint}
    :core/mac
