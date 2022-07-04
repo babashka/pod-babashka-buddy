@@ -10,9 +10,7 @@
                                  com.github.clj-easy/graal-config-cheshire {:git/url   "https://github.com/clj-easy/graal-config"
                                                                             :git/sha   "0dc2862e1b1c9871eef4c306ef77da3610a2bd93"
                                                                             :deps/root "config/cheshire/cheshire"}
-                                 com.github.clj-easy/graal-build-time      {:mvn/version "0.1.4"}
-                                 ;; NOTE: This needs to match the GRAALVM Version
-                                 org.graalvm.nativeimage/svm               {:mvn/version "22.1.0"}}}
+                                 com.github.clj-easy/graal-build-time      {:mvn/version "0.1.4"}}}
 
            :build ;; added by neil
            {:deps {io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}}
