@@ -107,7 +107,8 @@ jobs:
   linux-aarch64:
     machine:
       enabled: true
-      image: cimg/base:2022.06
+      # See https://circleci.com/docs/2.0/using-arm
+      image: ubuntu-2004:current
     resource_class: arm.large
     working_directory: ~/repo
     environment:
