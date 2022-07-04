@@ -7,6 +7,9 @@ if [ -z "$GRAALVM_HOME" ]; then
     exit 1
 fi
 
+export JAVA_HOME=$GRAALVM_HOME
+export PATH=$GRAALVM_HOME/bin:$PATH
+
 clojure -T:build uber
 
 "$GRAALVM_HOME/bin/gu" install native-image
@@ -14,9 +17,9 @@ clojure -T:build uber
 args=(-jar "pod-babashka-buddy.jar"
       -H:Name=pod-babashka-buddy
       -H:+ReportExceptionStackTraces
-      --initialize-at-build-time
-      -H:EnableURLProtocols=jar
+      --features=graalvm.feature.BouncyCastleFeature
       --report-unsupported-elements-at-runtime
+      -H:ReflectionConfigurationFiles=reflection-config.json
       --verbose
       --no-fallback
       --no-server

@@ -1,0 +1,49 @@
+[
+  {
+    "name" : "java.security.KeyFactory",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "clojure.lang.RT",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.crypto.util.PrivateKeyFactory",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.crypto.util.PublicKeyFactory",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.rsa.KeyFactorySpi",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi$SHA256",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.RSA$Mappings",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPrivateKey",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.jcajce.provider.asymmetric.edec.BCEdDSAPublicKey",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  }
+]

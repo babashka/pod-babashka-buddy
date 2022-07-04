@@ -6,7 +6,11 @@
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
             [pod.babashka.buddy.kdf :as kdf]
+            [pod.babashka.buddy.jws :as pjws]
+            [pod.babashka.buddy.jwt :as jwt]
+            [pod.babashka.buddy.keys :as keys]
             [buddy.sign.jwe :as jwe]
+            [buddy.sign.jws :as jws]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
             [cognitect.transit :as transit])
@@ -62,6 +66,16 @@
     'sha512 hash/sha512
     'ripemd160 hash/ripemd160
     'sha256 hash/sha256}
+   :core/keys
+   {'private-key keys/private-key
+    'public-key  keys/public-key
+    'str->public-key keys/str->public-key
+    'str->private-key keys/str->private-key
+    'jwk->private-key keys/jwk->private-key
+    'jwk->public-key keys/jwk->public-key
+    'jwk keys/jwk
+    'public-key->jwk keys/public-key->jwk
+    'jwk-thumbprint keys/jwk-thumbprint}
    :core/mac
    {'hash mac/hash
     'verify mac/verify}
@@ -72,10 +86,14 @@
    {'bytes->hex codecs/bytes->hex
     'bytes->long codecs/bytes->long
     'bytes->str codecs/bytes->str
+    'bytes->b64 codecs/bytes->b64
+    'bytes->b64u codecs/bytes->b64u
     'hex->bytes codecs/hex->bytes
     'long->bytes codecs/long->bytes
     'str->bytes codecs/str->bytes
-    'to-bytes codecs/to-bytes}
+    'to-bytes codecs/to-bytes
+    'b64->bytes codecs/b64->bytes
+    'b64u->bytes codecs/b64u->bytes}
    :core/kdf
    {'get-engine-bytes kdf/get-engine-bytes}
    :sign/jwe
@@ -85,13 +103,29 @@
     'decode-header jwe/decode-header
     'decrypt jwe/decrypt
     'encode jwe/encode
-    'encrypt jwe/encrypt}})
+    'encrypt jwe/encrypt}
+   :sign/jws
+   {'decode jws/decode
+    'decode-header jws/decode-header
+    'encode jws/encode
+    'sign   pjws/sign
+    'unsign pjws/unsign
+    }
+   :sign/jwt
+   {'sign jwt/sign
+    'unsign jwt/unsign
+    'encrypt jwt/encrypt
+    'decrypt jwt/decrypt}})
 
 (def lookup*
   {'pod.babashka.buddy.hash
    (:core/hash nses)
    'pod.babashka.buddy.core.hash
    (:core/hash nses)
+   'pod.babashka.buddy.keys
+   (:core/keys nses)
+   'pod.babashka.buddy.core.keys
+   (:core/keys nses)
    'pod.babashka.buddy.mac
    (:core/mac nses)
    'pod.babashka.buddy.core.mac
@@ -107,7 +141,11 @@
    'pod.babashka.buddy.core.kdf
    (:core/kdf nses)
    'pod.babashka.buddy.sign.jwe
-   (:sign/jwe nses)})
+   (:sign/jwe nses)
+   'pod.babashka.buddy.sign.jws
+   (:sign/jws nses)
+   'pod.babashka.buddy.sign.jwt
+   (:sign/jwt nses)})
 
 (defn lookup [var]
   (let [var-ns (symbol (namespace var))
@@ -128,6 +166,14 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.core.hash))}
+                  {:name pod.babashka.buddy.keys
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                            (get lookup* 'pod.babashka.buddy.keys))}
+                  {:name pod.babashka.buddy.core.keys
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                            (get lookup* 'pod.babashka.buddy.core.keys))}
                   {:name pod.babashka.buddy.mac
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
@@ -159,7 +205,15 @@
                   {:name pod.babashka.buddy.sign.jwe
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
-                                (get lookup* 'pod.babashka.buddy.sign.jwe))}]}))
+                                (get lookup* 'pod.babashka.buddy.sign.jwe))}
+                   {:name pod.babashka.buddy.sign.jws
+                    :vars ~(mapv (fn [[k _]]
+                                   {:name k})
+                             (get lookup* 'pod.babashka.buddy.sign.jws))}
+                   {:name pod.babashka.buddy.sign.jwt
+                    :vars ~(mapv (fn [[k _]]
+                                   {:name k})
+                                 (get lookup* 'pod.babashka.buddy.sign.jwt))}]}))
 
 (defn read-transit [^String v]
   (transit/read

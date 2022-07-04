@@ -24,9 +24,9 @@ call %GRAALVM_HOME%\bin\native-image.cmd ^
   "-cp" "pod-babashka-buddy.jar" ^
   "-H:Name=pod-babashka-buddy" ^
   "-H:+ReportExceptionStackTraces" ^
-  "--initialize-at-build-time" ^
-  "-H:EnableURLProtocols=jar" ^
+  "--features=graalvm.feature.BouncyCastleFeature" ^
   "--report-unsupported-elements-at-runtime" ^
+  "-H:ReflectionConfigurationFiles=reflection-config.json" ^
   "--verbose" ^
   "--no-fallback" ^
   "--no-server" ^
