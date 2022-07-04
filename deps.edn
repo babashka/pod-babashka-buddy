@@ -7,7 +7,8 @@
 
  :aliases {:native {:jvm-opts   ["-Dclojure.compiler.direct-linking=true"]
                     :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
-                                 org.graalvm.nativeimage/svm {:mvn/version "22.0.0.2"}}}
+                                 ;; NOTE: This needs to match the GRAALVM Version
+                                 org.graalvm.nativeimage/svm {:mvn/version "22.1.0"}}}
 
            :build ;; added by neil
            {:deps {io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}}
