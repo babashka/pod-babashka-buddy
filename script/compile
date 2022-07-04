@@ -15,7 +15,6 @@ args=(-jar "pod-babashka-buddy.jar"
       -H:Name=pod-babashka-buddy
       -H:+ReportExceptionStackTraces
       --features=graalvm.feature.BouncyCastleFeature
-      -H:EnableURLProtocols=jar
       --report-unsupported-elements-at-runtime
       -H:ReflectionConfigurationFiles=reflection-config.json
       --verbose
