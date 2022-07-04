@@ -1,13 +1,14 @@
 # Clojure CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-clojure/ for more details
+# Image https://github.com/CircleCI-Public/cimg-clojure
 #
 version: 2.1
 jobs:
   jvm:
     docker:
       # specify the version you desire here
-      - image: circleci/clojure:lein-2.9.3-buster
+      - image: cimg/clojure:1.11.1-openjdk-17.0
     working_directory: ~/repo
     environment:
       LEIN_ROOT: "true"
@@ -38,7 +39,7 @@ jobs:
           key: v1-dependencies-{{ checksum "deps.edn" }}
   linux:
     docker:
-      - image: circleci/clojure:openjdk-11-lein-2.9.6-bullseye
+      - image: cimg/clojure:1.11.1-openjdk-17.0
     working_directory: ~/repo
     environment:
       LEIN_ROOT: "true"
@@ -106,7 +107,7 @@ jobs:
   linux-aarch64:
     machine:
       enabled: true
-      image: ubuntu-2004:202101-01
+      image: cimg/base:2022.06
     resource_class: arm.large
     working_directory: ~/repo
     environment:
@@ -221,7 +222,7 @@ jobs:
           destination: release
   deploy:
     docker:
-      - image: circleci/clojure:lein-2.9.3-buster
+      - image: cimg/clojure:1.11.1-openjdk-17.0
     working_directory: ~/repo
     environment:
       LEIN_ROOT: "true"
