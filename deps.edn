@@ -1,17 +1,17 @@
-{:deps    {com.cognitect/transit-clj {:mvn/version "1.0.324"}
+{:deps    {com.cognitect/transit-clj {:mvn/version "1.0.329"}
            buddy/buddy-core          {:mvn/version "1.10.413"}
-           buddy/buddy-sign          {:mvn/version "3.4.1"}
+           buddy/buddy-sign          {:mvn/version "3.4.333"}
            nrepl/bencode             {:mvn/version "1.1.0"}
            babashka/pods             {:git/url "https://github.com/babashka/pods"
-                                      :sha     "22f200ef3006da90971e3bafa794985918b65fea"}}
+                                      :git/sha "93081b75e66fb4c4d161f89e714c6b9e8d55c8d5"}}
 
  :aliases {:native {:jvm-opts   ["-Dclojure.compiler.direct-linking=true"]
-                    :extra-deps {org.clojure/clojure                       {:mvn/version "1.10.3"}
+                    :extra-deps {org.clojure/clojure                       {:mvn/version "1.11.1"}
                                  com.github.clj-easy/graal-config-cheshire {:git/url   "https://github.com/clj-easy/graal-config"
                                                                             :git/sha   "0dc2862e1b1c9871eef4c306ef77da3610a2bd93"
                                                                             :deps/root "config/cheshire/cheshire"}
                                  com.github.clj-easy/graal-build-time      {:mvn/version "0.1.4"}}}
 
            :build ;; added by neil
-           {:deps {io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}}
+           {:deps {io.github.clojure/tools.build {:git/tag "v0.8.3" :git/sha "0d20256"}}
             :ns-default build}}}
