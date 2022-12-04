@@ -5,6 +5,7 @@
             [buddy.core.hash :as hash]
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
+            [buddy.core.crypto :as crypto]
             [pod.babashka.buddy.kdf :as kdf]
             [pod.babashka.buddy.jws :as pjws]
             [pod.babashka.buddy.jwt :as jwt]
@@ -94,6 +95,23 @@
     'to-bytes codecs/to-bytes
     'b64->bytes codecs/b64->bytes
     'b64u->bytes codecs/b64u->bytes}
+   :core/crypto
+   {'block-cipher crypto/block-cipher
+    'block-size crypto/block-size
+    'decrypt crypto/decrypt
+    'decrypt-cbc crypto/decrypt-cbc
+    'decrypt-gcm crypto/decrypt-gcm
+    'encrypt crypto/encrypt
+    'encrypt-cbc crypto/encrypt-cbc
+    'encrypt-gcm crypto/encrypt-gcm
+    'end! crypto/end! 
+    'init! crypto/init!
+    'output-size crypto/output-size
+    'process-block! crypto/process-block!
+    'process-bytes! crypto/process-bytes!
+    'split-by-blocksize crypto/split-by-blocksize
+    'stream-cipher crypto/stream-cipher
+    'get-block-size crypto/get-block-size}
    :core/kdf
    {'get-engine-bytes kdf/get-engine-bytes}
    :sign/jwe
@@ -140,6 +158,8 @@
    (:core/codecs nses)
    'pod.babashka.buddy.core.kdf
    (:core/kdf nses)
+   'pod.babashka.buddy.core.crypto
+   (:core/crypto nses)
    'pod.babashka.buddy.sign.jwe
    (:sign/jwe nses)
    'pod.babashka.buddy.sign.jws
@@ -202,6 +222,10 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.core.kdf))}
+                  {:name pod.babashka.buddy.core.crypto
+                   :vars ~(mapv (fn [[k _]]
+                                  (:name k))
+                                (get lookup* 'pod.babashka.buddy.core.crypto))}
                   {:name pod.babashka.buddy.sign.jwe
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
