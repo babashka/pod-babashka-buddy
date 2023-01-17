@@ -7,11 +7,16 @@ For buddy's documentation, go [here](https://funcool.github.io/buddy-core/latest
 
 Available namespaces:
 
+- `pod.babashka.buddy.core.crypto`
+- `pod.babashka.buddy.core.codecs`
 - `pod.babashka.buddy.core.hash`
+- `pod.babashka.buddy.core.kdf`
+- `pod.babashka.buddy.core.keys`
 - `pod.babashka.buddy.core.mac`
 - `pod.babashka.buddy.core.nonce`
-- `pod.babashka.buddy.core.kdf`
 - `pod.babashka.buddy.sign.jwe`
+- `pod.babashka.buddy.sign.jws`
+- `pod.babashka.buddy.sign.jwt`
 
 If you are missing functionality, please create an issue.
 
@@ -30,6 +35,54 @@ and that is all that this pod exposes from that namespace.
 
 You call it with a map just like `engine`, but you need to add a `:length` key
 that gets passed to `buddy.core.kdf/get-bytes`.
+
+### Crypto
+
+Note that `pod.babashka.buddy.core.crypto` deviates from buddy's documented
+API because the `buddy.core.crypto/engine` returns an instance of
+`org.bouncycastle.crypto.generators.HKDFBytesGenerator` which can't be
+serialized back to the pod client. The same happens with several of the
+other low-level functions available in that namespace.
+
+So the same approach used by for KDF functions is used in
+`pod.babashka.buddy.core.crypto`: compose the problematic functions
+together inside the pod function, and always return serializable values.
+
+Just a very small subset of what is available in `buddy.core.crypto`
+namespace is exposed. The rationale for this is that a babahska pod user
+won't generally need or use the low-level cryptographic primitives, or know
+what cryptographic constructs may offer which security properties (like
+authenticated encryption, etc).
+
+So the set of exposed functions are those that are sane and secure enough
+for most people, while still providing choice:
+
+- the block ciphers with authenticated encryption offered by
+  `buddy.core.crypto/encrypt` and `buddy.core.crypto/decrypt`.
+
+- the stream ciphers offered by `buddy.core.crypto/stream-cipher`
+  (ChaCha20), even if they don't provide authenticated encryption at the
+  moment. But once `buddy.core.crypto` adds support for authenticated
+  encryption constructs (e.g., ChaCha20+Poly1305) we could add support for
+  them.
+
+In order to use the block ciphers with authenticated encryption you need to
+use `pod.babashka.buddy.core.crypto/block-cipher-encrypt` and
+`pod.babashka.buddy.core.crypto/block-cipher-decrypt` functions. They
+accept the same parameters as the `buddy.core.crypto/encrypt` and
+`buddy.core.crypto/decrypt` functions. Both functions return a byte array.
+
+In order to use the stream ciphers, you need to use
+`pod.babashka.buddy.core.crypto/stream-cipher-encrypt` and
+`pod.babashka.buddy.core.crypto/stream-cipher-decrypt` functions.
+
+They accept an `input` argument (that is passed to
+`buddy.core.crypto/process-bytes!` as its `in` argument), a `key` and `iv`
+arguments (that are passed to `buddy.core.crypto/init!` as the same key
+names in the `params` argument), and an `alg` argument (that is passed to
+`buddy.core.crypto/stream-cipher` as its argument with the same name). The
+idea is to keep the type of arguments and their ordering as similar to the
+block cipher functions as possible.
 
 ### Keys
 
