@@ -29,6 +29,9 @@
   (algo [_] "EdDSA"))
 
 
+(defn log [e]
+  (binding [*out* *err*]
+    (prn e)))
 
 (defn ->private-key
   ^PrivateKey [pkey]
@@ -37,7 +40,9 @@
           ^KeyFactory kf (KeyFactory/getInstance (algo key-params) "BC")
           ^PKCS8EncodedKeySpec ks (PKCS8EncodedKeySpec. pkey)]
       (.generatePrivate kf ks))
-    (catch Exception _ pkey)))
+    (catch Exception _e
+      #_(log e)
+      pkey)))
 
 
 
@@ -48,4 +53,6 @@
           ^KeyFactory kf (KeyFactory/getInstance (algo key-params) "BC")
           ^X509EncodedKeySpec ks (X509EncodedKeySpec. pkey)]
       (.generatePublic kf ks))
-    (catch Exception _ pkey)))
+    (catch Exception _e
+      #_(log e)
+      pkey)))

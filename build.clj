@@ -10,7 +10,7 @@
 
 (defn uber [_]
   (clean nil)
-  #_(b/javac {:src-dirs   ["java"]
+  (b/javac {:src-dirs   ["java"]
             :class-dir  class-dir
             :basis      basis
             :javac-opts ["-source" "11" "-target" "11"]})
