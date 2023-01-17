@@ -31,6 +31,38 @@
       signature (codecs/bytes->hex (mac/hash payload {:alg hash-algorithm :key secret}))]
   (prn (string/join "-" [nonce-hex timestamp signature])))
 
+(require '[pod.babashka.buddy.core.crypto :as crypto])
+
+(let [input "babashka rocks block encrypting!"
+      input-bytes (codecs/str->bytes input)
+      key "16e333b7321d3ae94299ce0dfdf6b5a5baf61f526337812744ac7aa998dd4b4163994da4d03dc93b477ed72a5627558405a065d47fff20b28d56baf673f16f3c"
+      key-bytes(codecs/hex->bytes key)
+      iv "81bdb9c095276c5e38a6cf380e4ea59b"
+      iv-bytes (codecs/hex->bytes iv)
+      options {:alg :aes256-cbc-hmac-sha512}
+      output-bytes (crypto/block-cipher-encrypt input-bytes key-bytes iv-bytes options)
+      output-hex (codecs/bytes->hex output-bytes)]
+  (assert (= "e71d31c9d8a4c6090268048fcfda4db7ea0c2a882c8f28d0f13a0d467720106175231ba414594ff0a7388a3bb3a9c3a375e3033a23e94143f9a352917a1f4995afe94c2722a4e7ed0505e7f2b41a97df"
+             output-hex))
+  (assert (= (vec (crypto/block-cipher-decrypt output-bytes key-bytes iv-bytes options))
+             (vec input-bytes)))
+  (prn output-hex))
+
+(let [input "babashka rocks stream encrypting!"
+      input-bytes (codecs/str->bytes input)
+      key "1c30156b954e528a4775e7c4e25ba9f3111b2f774dd2549bca6a7ba9bb13adfc"
+      key-bytes (codecs/hex->bytes key)
+      iv "8f9ba138cce6c79b"
+      iv-bytes (codecs/hex->bytes iv)
+      alg :chacha
+      output-bytes (crypto/stream-cipher-encrypt input-bytes key-bytes iv-bytes alg)
+      output-hex (codecs/bytes->hex output-bytes)]
+  (assert (= "f775ed83775fada9f9db35225f6deff5076f9858e89c8ae9805797657ad71a88e3"
+             output-hex))
+  (assert (= (vec (crypto/stream-cipher-decrypt output-bytes key-bytes iv-bytes alg))
+             (vec input-bytes)))
+  (prn output-hex))
+
 (require '[pod.babashka.buddy.core.kdf :as kdf])
 
 (let [key-bytes (kdf/get-engine-bytes {:alg :hkdf+sha256 :key "supersecret" :salt "sea"
