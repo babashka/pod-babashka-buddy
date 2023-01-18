@@ -25,7 +25,7 @@ task:
     # script/run_lib_tests
 
     VERSION=$(cat resources/POD_BABASHKA_BUDDY_VERSION)
-    arch=${BABASHKA_ARCH:-amd64}
+    arch=${APP_ARCH:-amd64}
     archive="pod-babashka-buddy-$VERSION-$APP_PLATFORM-$arch.zip"
     zip "$archive" pod-babashka-buddy
     bash <(curl https://raw.githubusercontent.com/babashka/babashka/master/install) --dir .
