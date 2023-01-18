@@ -84,7 +84,6 @@
   (prn decrypted-jwe)
   (assert (= decrypted-jwe jwt-json)))
 
-
 ;; -- Keys Tests --
 (require '[pod.babashka.buddy.keys :as keys])
 
@@ -96,9 +95,9 @@
 
 (assert (= ed25519-jwk-key (keys/jwk (keys/jwk->private-key ed25519-jwk-key)
                              (keys/jwk->public-key ed25519-jwk-key))))
+
 (assert (= "kPrK_qmxVWaYVA9wwBF6Iuo3vVzz7TxHCTwXBygrS4k"
           (-> ed25519-jwk-key keys/jwk-thumbprint codecs/bytes->b64u codecs/bytes->str)))
-
 
 (def ed448-jwk-key
   {:kty "OKP"
@@ -118,7 +117,6 @@
 (assert (= rsa2048-jwk-key (keys/jwk (keys/jwk->private-key rsa2048-jwk-key)
                              (keys/jwk->public-key rsa2048-jwk-key))))
 
-
 (def rsa-jwk-pubkey
   {:kty "RSA",
    :n "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbISD08qNLyrdkt-bFTWhAI4vMQFh6WeZu0fM4lFd2NcRwr3XPksINHaQ-G_xBniIqbw0Ls1jF44-csFCur-kEgU8awapJzKnqDKgw"
@@ -128,7 +126,6 @@
 
 (assert (= "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
           (-> rsa-jwk-pubkey keys/jwk-thumbprint codecs/bytes->b64u codecs/bytes->str)))
-
 
 (def ec256-jwk-key
   {:kty "EC",

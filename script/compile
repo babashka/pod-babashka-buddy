@@ -23,6 +23,8 @@ args=(-jar "pod-babashka-buddy.jar"
       --verbose
       --no-fallback
       --no-server
+      --initialize-at-build-time=org.bouncycastle
+      "--rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG\$Default,org.bouncycastle.jcajce.provider.drbg.DRBG\$NonceAndIV"
       "-J-Xmx3g"
      )
 
