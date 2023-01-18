@@ -120,7 +120,7 @@ a encoded byte-array of the key. The affected functions are:
 ``` clojure
 (require '[babashka.pods :as pods])
 
-(pods/load-pod 'org.babashka/buddy "0.2.0")
+(pods/load-pod 'org.babashka/buddy "0.3.3")
 
 (require '[clojure.string :as str]
          '[pod.babashka.buddy.core.codecs :as codecs]
