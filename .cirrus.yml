@@ -6,7 +6,7 @@ task:
   env:
     LEIN_ROOT: "true"
     GRAALVM_VERSION: "22.3.0"
-    GRAALVM_HOME: ${HOME}/graalvm-ce-java11-22.3.0/Contents/Home
+    GRAALVM_HOME: ${HOME}/graalvm-ce-java17-22.3.0/Contents/Home
     APP_PLATFORM: macos # used in release script
     APP_ARCH: aarch64
     APP_TEST_ENV: native
