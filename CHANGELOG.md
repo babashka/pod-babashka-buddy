@@ -2,7 +2,7 @@
 
 ## v0.3.3
 
-- Add support for buddy.core.crypto ([@arenaza](https://github.com/arenaza))
+- Add support for buddy.core.crypto ([@iarenaza](https://github.com/iarenaza))
 - Provide macos aarch64 binary
 
 ## v0.2.0
