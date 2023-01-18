@@ -10,7 +10,6 @@ task:
     APP_PLATFORM: macos # used in release script
     APP_ARCH: aarch64
     APP_TEST_ENV: native
-    GITHUB_TOKEN: ENCRYPTED[2dfdcafc7d54acf9defc1b020a2d99bc5ac4bef2a50ec5e44f22cece9abb159b4df4a5f26abee3bb5e3efe52c544a561]
   script: |
     sudo script/install-clojure /usr/local
     sudo script/install-leiningen
