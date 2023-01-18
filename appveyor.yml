@@ -52,6 +52,12 @@ build_script:
 - cmd: >-
     call script/compile.bat
 
+    set /P VERSION=< resources\POD_BABASHKA_BUDDY_VERSION
+
+    set ARCHIVE=pod-babashka-buddy-%VERSION%-windows-amd64.zip
+
+    bb release-artifact --file %ARCHIVE%
+
 artifacts:
 - path: pod-babashka-buddy-*-windows-amd64.zip
   name: pod-babashka-buddy

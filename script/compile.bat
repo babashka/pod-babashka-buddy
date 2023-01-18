@@ -25,6 +25,7 @@ call %GRAALVM_HOME%\bin\native-image.cmd ^
   "-H:Name=pod-babashka-buddy" ^
   "-H:+ReportExceptionStackTraces" ^
   "--features=graalvm.feature.BouncyCastleFeature" ^
+  "--rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG$Default,org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV" ^
   "--report-unsupported-elements-at-runtime" ^
   "-H:ReflectionConfigurationFiles=reflection-config.json" ^
   "--verbose" ^
