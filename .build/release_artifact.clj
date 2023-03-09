@@ -23,7 +23,7 @@
         current-version
         (-> (slurp "resources/POD_BABASHKA_BUDDY_VERSION")
             str/trim)]
-    (if true #_(and ght (contains? #{"master" "main"} branch))
+    (if (and ght (contains? #{"master" "main"} branch))
       (do (assert file "File name must be provided")
           (println "On main branch. Publishing asset.")
           (ghr/overwrite-asset {:org "babashka"
