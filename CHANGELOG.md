@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.4
+
+- Add support for [buddy.hashers](https://github.com/funcool/buddy-hashers)
+
 ## v0.3.3
 
 - Add support for buddy.core.crypto ([@iarenaza](https://github.com/iarenaza))

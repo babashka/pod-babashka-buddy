@@ -45,5 +45,15 @@
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.crypto.digests.SHA256Digest",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
+  },
+  {
+    "name" : "org.bouncycastle.crypto.params.KeyParameter",
+    "allPublicConstructors" : true,
+    "allPublicMethods" : true
   }
 ]
