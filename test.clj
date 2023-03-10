@@ -214,3 +214,14 @@
 (when-not (= "executable" (System/getProperty "org.graalvm.nativeimage.kind"))
   (shutdown-agents)
   (System/exit 0))
+
+;; -- Hashers Tests --
+(require '[pod.babashka.buddy.hashers :as hashers])
+
+(def salt16 "f0168195ebd8eb214e535d6793ae31be")
+(def hash-pbkdf2 "pbkdf2+sha256$6630313638313935656264386562323134653533356436373933616533316265$100000$417bbe0e252343550ff15cb5d5b87b6a539f4905a96a9fdaa9f2805416670f98")
+
+(assert (= hash-pbkdf2
+           (hashers/derive "SECRET PASSWORD!" {:salt salt16 :alg :pbkdf2+sha256})))
+
+(assert (true? (:valid (hashers/verify "SECRET PASSWORD!" hash-pbkdf2))))

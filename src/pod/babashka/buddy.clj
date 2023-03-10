@@ -5,6 +5,7 @@
             [buddy.core.hash :as hash]
             [buddy.core.mac :as mac]
             [buddy.core.nonce :as nonce]
+            [buddy.hashers :as hashers]
             [pod.babashka.buddy.crypto :as crypto]
             [pod.babashka.buddy.kdf :as kdf]
             [pod.babashka.buddy.jws :as pjws]
@@ -83,6 +84,11 @@
    :core/nonce
    {'random-bytes nonce/random-bytes
     'random-nonce nonce/random-nonce}
+   :core/hashers
+   {'derive hashers/derive
+    'encrypt hashers/encrypt
+    'check hashers/check
+    'verify hashers/verify}
    :core/codecs
    {'bytes->hex codecs/bytes->hex
     'bytes->long codecs/bytes->long
@@ -140,6 +146,8 @@
    (:core/nonce nses)
    'pod.babashka.buddy.core.nonce
    (:core/nonce nses)
+   'pod.babashka.buddy.hashers
+   (:core/hashers nses)
    'pod.babashka.buddy.codecs
    (:core/codecs nses)
    'pod.babashka.buddy.core.codecs
@@ -198,6 +206,10 @@
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})
                                 (get lookup* 'pod.babashka.buddy.core.nonce))}
+                  {:name pod.babashka.buddy.hashers
+                   :vars ~(mapv (fn [[k _]]
+                                  {:name k})
+                                (get lookup* 'pod.babashka.buddy.hashers))}
                   {:name pod.babashka.buddy.codecs
                    :vars ~(mapv (fn [[k _]]
                                   {:name k})

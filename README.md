@@ -3,7 +3,8 @@
 ## API
 
 This pod uses the namespace scheme `buddy.x` -> `pod.babashka.buddy.x`.
-For buddy's documentation, go [here](https://funcool.github.io/buddy-core/latest/api/index.html).
+For buddy's documentation, go [here](https://funcool.github.io/buddy-core/latest/api/index.html) and
+[here](https://funcool.github.io/buddy-hashers/latest/user-guide.html) for buddy-hashers.
 
 Available namespaces:
 
@@ -17,6 +18,7 @@ Available namespaces:
 - `pod.babashka.buddy.sign.jwe`
 - `pod.babashka.buddy.sign.jws`
 - `pod.babashka.buddy.sign.jwt`
+- `pod.babashka.buddy.hashers`
 
 If you are missing functionality, please create an issue.
 
@@ -114,6 +116,11 @@ a encoded byte-array of the key. The affected functions are:
   - `unsign`
   - `encrypt`
   - `decrypt`
+
+### Hashers
+The `derive` and `verify` functions are exposed. Remember to set the `:salt` in
+the options map supplied to `derive` or you'll get a different hash each time.
+
 
 ## Example
 
