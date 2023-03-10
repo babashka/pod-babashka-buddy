@@ -1,5 +1,7 @@
 # Changelog
 
+[pod-babashka-buddy](https://github.com/babashka/pod-babashka-buddy): A pod around buddy core (Cryptographic Api for Clojure).
+
 ## v0.3.4
 
 - Add support for [buddy.hashers](https://github.com/funcool/buddy-hashers)

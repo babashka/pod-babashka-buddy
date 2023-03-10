@@ -20,6 +20,8 @@ Available namespaces:
 - `pod.babashka.buddy.sign.jwt`
 - `pod.babashka.buddy.hashers`
 
+The `.core` part may be left out for brevity as the same namespaces are mirrored under the shorter names as well.
+
 If you are missing functionality, please create an issue.
 
 ### KDF
@@ -157,6 +159,6 @@ To test the native image with bb, run `bb test.clj`.
 
 ## License
 
-Copyright © 2020 Michiel Borkent
+Copyright © 2020 - 2023 Michiel Borkent
 
 Distributed under the Apache 2.0 License. See LICENSE.
